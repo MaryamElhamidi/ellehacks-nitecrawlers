@@ -8,7 +8,7 @@ import { analyzeImage, estimatePrice } from '../services/visionService';
 const ScanScreen = () => {
     const navigate = useNavigate();
     const webcamRef = useRef(null);
-    const { hasOnboarded, money, setCurrentScannedItem } = useGame();
+    const { hasOnboarded, money, setCurrentScannedItem, checkSimilarity } = useGame(); // Added checkSimilarity
     const [isScanning, setIsScanning] = useState(false);
     const [cameraReady, setCameraReady] = useState(false);
 
@@ -40,8 +40,15 @@ const ScanScreen = () => {
                     name: result.name, // e.g. "Coffee Mug"
                     price: estimatedItem.price,
                     category: estimatedItem.category,
+                    financialInfo: result.financialInfo, // Added financial info
                     raw: result.raw
                 };
+
+                // Check for similarity
+                const similarItemName = checkSimilarity(validItem.name);
+                if (similarItemName) {
+                    alert(`HEY! This is similar to ${similarItemName} in your dictionary!`); // Simple notification for now
+                }
 
                 // Store in global state
                 setCurrentScannedItem(validItem);
@@ -60,7 +67,7 @@ const ScanScreen = () => {
         } else {
             setIsScanning(false);
         }
-    }, [webcamRef, navigate, setCurrentScannedItem]);
+    }, [webcamRef, navigate, setCurrentScannedItem, checkSimilarity]);
 
     if (!hasOnboarded) return null;
 
@@ -84,7 +91,7 @@ const ScanScreen = () => {
                 </div>
 
                 {/* Camera Viewfinder */}
-                <div className="relative w-72 h-72 bg-stone-800 rounded-3xl border-4 border-white shadow-xl overflow-hidden group">
+                <div className="relative w-72 h-72 bg-stone-800 pixel-border shadow-xl overflow-hidden group rounded-none">
                     {/* Live Camera Feed */}
                     <div className="absolute inset-0 flex items-center justify-center bg-stone-900">
                         <Webcam

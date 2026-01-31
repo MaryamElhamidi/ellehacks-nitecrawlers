@@ -61,6 +61,13 @@ const Layout = ({ children }) => {
                         <span className="text-[10px] font-bold tracking-wide">Island</span>
                     </NavLink>
 
+                    <NavLink to="/dictionary" className={({ isActive }) => `flex flex-col items-center space-y-1 transition-all ${isActive ? 'text-amber-500 -translate-y-2' : 'text-stone-400 hover:text-stone-600'}`}>
+                        <div className={`p-2 rounded-full transition-all duration-300 ${({ isActive }) => isActive ? 'bg-amber-100 shadow-inner' : ''}`}>
+                            <img src="/src/assets/dictionary_icon.png" alt="Book" className="w-6 h-6 object-contain" style={{ imageRendering: 'pixelated' }} />
+                        </div>
+                        <span className="text-[10px] font-bold tracking-wide">Cards</span>
+                    </NavLink>
+
                     <NavLink to="/parent" className={({ isActive }) => `flex flex-col items-center space-y-1 transition-all ${isActive ? 'text-orange-500 -translate-y-2' : 'text-stone-400 hover:text-stone-600'}`}>
                         <div className={`p-2 rounded-full transition-all duration-300 ${({ isActive }) => isActive ? 'bg-orange-100 shadow-inner' : ''}`}>
                             <Users size={24} strokeWidth={2.5} />

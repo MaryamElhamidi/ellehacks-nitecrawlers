@@ -42,10 +42,12 @@ export const analyzeImage = async (base64Image) => {
 
         // Prioritize object detection, fallback to labels
         const bestMatch = objects.length > 0 ? objects[0].name : (labels.length > 0 ? labels[0].description : "Unknown Object");
+        const financialInfo = getFinancialInfo(bestMatch);
 
         return {
             name: bestMatch,
             allLabels: labels.map(l => l.description),
+            financialInfo: financialInfo,
             raw: response.data
         };
 
@@ -53,6 +55,68 @@ export const analyzeImage = async (base64Image) => {
         console.error("Error calling Vision API:", error);
         throw error;
     }
+};
+
+// Helper to get financial literacy info
+export const getFinancialInfo = (label) => {
+    const l = label.toLowerCase();
+
+    if (l.includes('shoe') || l.includes('sneaker') || l.includes('clothing')) {
+        return {
+            term: "Depreciation",
+            simpleDefinition: "When things lose value over time.",
+            kidExplanation: "Like how your shiny new shoes get scuffed and old after you run in them!",
+            visualType: "chart-down"
+        };
+    }
+    if (l.includes('cup') || l.includes('mug') || l.includes('bottle')) {
+        return {
+            term: "Reusable vs. Disposable",
+            simpleDefinition: "Using things many times instead of once.",
+            kidExplanation: "A good water bottle can be used 1,000 times! That saves money on buying plastic bottles.",
+            visualType: "recycle"
+        };
+    }
+    if (l.includes('tech') || l.includes('phone') || l.includes('laptop') || l.includes('electronic')) {
+        return {
+            term: "Insurance",
+            simpleDefinition: "Paying a little now to protect big things later.",
+            kidExplanation: "It's like paying for a shield! If your expensive gadget breaks, the shield fixes it for free.",
+            visualType: "shield"
+        };
+    }
+    if (l.includes('book') || l.includes('paper')) {
+        return {
+            term: "Investment",
+            simpleDefinition: "Spending money to get smarter or richer later.",
+            kidExplanation: "Reading books makes your brain bigger! That helps you get a cool job one day.",
+            visualType: "chart-up"
+        };
+    }
+    if (l.includes('toy') || l.includes('game')) {
+        return {
+            term: "Want vs. Need",
+            simpleDefinition: "Knowing what you must have vs. what is just fun.",
+            kidExplanation: "You NEED food to grow, but you WANT toys to play. Both are okay, but needs come first!",
+            visualType: "scale"
+        };
+    }
+    if (l.includes('food') || l.includes('snack') || l.includes('fruit')) {
+        return {
+            term: "Perishable",
+            simpleDefinition: "Things that go bad effectively.",
+            kidExplanation: "You have to eat it fast before it gets yucky! Don't buy more than you can eat.",
+            visualType: "apple"
+        };
+    }
+
+    // Default
+    return {
+        term: "Opportunity Cost",
+        simpleDefinition: "What you give up when you choose something else.",
+        kidExplanation: "If you buy this, you can't buy something else with the same money. Choose wisely!",
+        visualType: "balance"
+    };
 };
 
 // Helper to estimate price based on category/label

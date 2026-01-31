@@ -20,11 +20,47 @@ export const GameProvider = ({ children }) => {
     const [currentScannedItem, setCurrentScannedItem] = useState(null);
     const [transactions, setTransactions] = useState([]);
 
+    // Dictionary State (Persisted)
+    const [dictionary, setDictionary] = useState(() => {
+        const saved = localStorage.getItem('nitecrawlers_dictionary');
+        return saved ? JSON.parse(saved) : [];
+    });
+
     // Initialize money when allowance is set
     useEffect(() => {
         if (!hasOnboarded) return;
         setMoney(allowance);
     }, [allowance, hasOnboarded]);
+
+    // Persist dictionary
+    useEffect(() => {
+        localStorage.setItem('nitecrawlers_dictionary', JSON.stringify(dictionary));
+    }, [dictionary]);
+
+    // Dictionary Actions
+    const addToDictionary = (item) => {
+        // Prevent duplicates by exact name for now
+        if (!dictionary.some(d => d.name === item.name)) {
+            const newItem = {
+                ...item,
+                discoveredAt: new Date().toISOString(),
+                id: Date.now().toString()
+            };
+            setDictionary(prev => [newItem, ...prev]);
+            return true; // Added
+        }
+        return false; // Already exists
+    };
+
+    const checkSimilarity = (newItemName) => {
+        // Simple case-insensitive check for now, can be expanded to category matching
+        if (!newItemName) return null;
+        const match = dictionary.find(d =>
+            d.name.toLowerCase().includes(newItemName.toLowerCase()) ||
+            newItemName.toLowerCase().includes(d.name.toLowerCase())
+        );
+        return match ? match.name : null;
+    };
 
     // Simulation / Consequence Engine
     const simulateChoice = (choiceType, item) => {
@@ -47,6 +83,8 @@ export const GameProvider = ({ children }) => {
                     result.literacyChange = 2; // Small learning
                     result.growthChange = 0; // Stagnant
                     result.message = `You bought the ${itemName}. Enjoy it, but remember your budget!`;
+                    // Auto-add to dictionary on buy? Optional, maybe only on scan?
+                    // For now, we assume dictionary is "Seen" items, so maybe adding on choice screen is better.
                 } else {
                     // Should be prevented by UI, but fallback:
                     result.moneyChange = 0;
@@ -110,7 +148,8 @@ export const GameProvider = ({ children }) => {
             timeline,
             currentScannedItem, setCurrentScannedItem,
             transactions,
-            simulateChoice
+            simulateChoice,
+            dictionary, addToDictionary, checkSimilarity
         }}>
             {children}
         </GameContext.Provider>

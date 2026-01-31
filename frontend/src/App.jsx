@@ -6,6 +6,7 @@ import ScanScreen from './pages/ScanScreen';
 import ChoiceScreen from './pages/ChoiceScreen';
 import ConsequenceScreen from './pages/ConsequenceScreen';
 import ParentView from './pages/ParentView';
+import DictionaryScreen from './pages/DictionaryScreen';
 
 // Placeholders until pages are built
 function Placeholder({ name }) {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/" element={<ScanScreen />} />
             <Route path="/choice" element={<ChoiceScreen />} />
             <Route path="/consequence" element={<ConsequenceScreen />} />
+            <Route path="/dictionary" element={<DictionaryScreen />} />
             <Route path="/parent" element={<ParentView />} />
 
             {/* Redirect unknown routes */}
