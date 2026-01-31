@@ -51,8 +51,8 @@ export default function Onboarding() {
                             <button
                                 onClick={() => setFrequency('weekly')}
                                 className={`py-3 rounded-xl text-sm font-bold transition-all duration-200 ${frequency === 'weekly'
-                                        ? 'bg-white text-green-700 shadow-sm'
-                                        : 'text-stone-400 hover:text-stone-600'
+                                    ? 'bg-white text-green-700 shadow-sm'
+                                    : 'text-stone-400 hover:text-stone-600'
                                     }`}
                             >
                                 Weekly
@@ -60,8 +60,8 @@ export default function Onboarding() {
                             <button
                                 onClick={() => setFrequency('monthly')}
                                 className={`py-3 rounded-xl text-sm font-bold transition-all duration-200 ${frequency === 'monthly'
-                                        ? 'bg-white text-green-700 shadow-sm'
-                                        : 'text-stone-400 hover:text-stone-600'
+                                    ? 'bg-white text-green-700 shadow-sm'
+                                    : 'text-stone-400 hover:text-stone-600'
                                     }`}
                             >
                                 Monthly
