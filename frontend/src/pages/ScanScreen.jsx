@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Webcam from 'react-webcam';
+
 import { Camera, Search, RefreshCw, Wallet, Zap } from 'lucide-react';
 import { useGame } from '../context/GameContext';
 import { analyzeImage, estimatePrice } from '../services/visionService';
