@@ -1,12 +1,6 @@
-from elevenlabs import ElevenLabs
+from pydantic import BaseModel
+from typing import Optional
 
-client = ElevenLabs(
-    base_url=api_key
-)
-
-client.text_to_speech.convert(
-    voice_id="JBFqnCBsd6RMkjVDRZzb",
-    output_format="mp3_44100_128",
-    text="The first move is what sets everything in motion.",
-    model_id="eleven_multilingual_v2"
-)
+class TTSRequest(BaseModel):
+    text: str
+    voice_id: Optional[str] = "21m00Tcm4TlvDq8ikWAM" # Default voice if none provided

@@ -2,6 +2,39 @@ import React from 'react';
 import { Volume2, Globe, MessageCircle } from 'lucide-react';
 
 const ParentView = () => {
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    const handlePlayAudio = async () => {
+        if (isLoading) return;
+        setIsLoading(true);
+        try {
+            const textToSpeak = "Small recurring expenses add up to big amounts over time. Gastar un poco todos los días es como una gota que llena el vaso. ¡Suma mucho al final!";
+            const response = await fetch("http://localhost:8000/api/tts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    text: textToSpeak,
+                    voice_id: "21m00Tcm4TlvDq8ikWAM"
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+
+            const blob = await response.blob();
+            const audioUrl = URL.createObjectURL(blob);
+            const audio = new Audio(audioUrl);
+            audio.play();
+        } catch (error) {
+            console.error("Failed to play audio:", error);
+            alert("Failed to play audio. Check backend logs.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
     return (
         <div className="flex flex-col h-full pt-8 px-4 space-y-6">
 
@@ -17,7 +50,11 @@ const ParentView = () => {
             <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-stone-100">
                 <div className="bg-orange-50 p-4 border-b border-orange-100 flex justify-between items-center">
                     <span className="font-bold text-orange-800 text-sm tracking-wide">English → Spanish</span>
-                    <button className="text-orange-400 hover:text-orange-600">
+                    <button
+                        onClick={handlePlayAudio}
+                        className={`text-orange-400 hover:text-orange-600 transition-colors ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={isLoading}
+                    >
                         <Volume2 size={20} />
                     </button>
                 </div>
