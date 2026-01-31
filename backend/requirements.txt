@@ -19,3 +19,5 @@ typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==2.6.3
 websockets==16.0
+python-dotenv==1.0.0
+uvicorn==0.23.2

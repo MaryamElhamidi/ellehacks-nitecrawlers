@@ -4,6 +4,12 @@ from fastapi.responses import StreamingResponse
 from backend.elevenlabs.elevenLabsClient import ElevenLabsClient
 from backend.elevenlabs.requests import TTSRequest
 import io
+import os
+from dotenv import load_dotenv
+
+# Load env from the same directory as this file
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 app = FastAPI()
 
