@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { GameProvider } from './context/GameContext';
 import Layout from './components/Layout';
+import Onboarding from './pages/Onboarding';
 import ScanScreen from './pages/ScanScreen';
 import ChoiceScreen from './pages/ChoiceScreen';
 import ConsequenceScreen from './pages/ConsequenceScreen';
@@ -23,6 +24,7 @@ function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
+            <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/" element={<ScanScreen />} />
             <Route path="/choice" element={<ChoiceScreen />} />
             <Route path="/consequence" element={<ConsequenceScreen />} />
