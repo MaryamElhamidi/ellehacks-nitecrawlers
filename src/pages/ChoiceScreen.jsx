@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Coffee, ArrowRight, Calendar, Ban } from 'lucide-react';
+import { useGame } from '../context/GameContext';
 
 const ChoiceCard = ({ title, sub, icon: Icon, color, onClick }) => (
     <button
@@ -22,10 +23,11 @@ const ChoiceCard = ({ title, sub, icon: Icon, color, onClick }) => (
 
 const ChoiceScreen = () => {
     const navigate = useNavigate();
+    const { simulateChoice } = useGame();
 
     const handleChoice = (choice) => {
-        // Pass choice state if needed in real app
-        navigate('/consequence', { state: { choice } });
+        const result = simulateChoice(choice);
+        navigate('/consequence', { state: { choice, result } });
     };
 
     return (

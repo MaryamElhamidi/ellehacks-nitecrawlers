@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { GameProvider } from './context/GameContext';
 import Layout from './components/Layout';
 import ScanScreen from './pages/ScanScreen';
 import ChoiceScreen from './pages/ChoiceScreen';
@@ -18,19 +19,21 @@ function Placeholder({ name }) {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<ScanScreen />} />
-          <Route path="/choice" element={<ChoiceScreen />} />
-          <Route path="/consequence" element={<ConsequenceScreen />} />
-          <Route path="/parent" element={<ParentView />} />
+    <GameProvider>
+      <BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<ScanScreen />} />
+            <Route path="/choice" element={<ChoiceScreen />} />
+            <Route path="/consequence" element={<ConsequenceScreen />} />
+            <Route path="/parent" element={<ParentView />} />
 
-          {/* Redirect unknown routes */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
+            {/* Redirect unknown routes */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+    </GameProvider>
   )
 }
 

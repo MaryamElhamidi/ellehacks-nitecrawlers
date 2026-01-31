@@ -2,7 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Camera, Map, Users, Leaf } from 'lucide-react';
 
+import { useGame } from '../context/GameContext';
+
 const Layout = ({ children }) => {
+    const { money, literacy } = useGame();
+
     return (
         <div className="min-h-screen bg-green-50 font-sans text-stone-800 pb-20 overflow-hidden relative">
             {/* Background decorations - simple circles to mimic AC islands/clouds */}
@@ -11,15 +15,26 @@ const Layout = ({ children }) => {
             <div className="absolute -bottom-8 left-20 w-64 h-64 bg-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
 
             <div className="max-w-md mx-auto min-h-screen relative z-10 flex flex-col">
-                {/* Top Status Bar (Mock) */}
-                <div className="p-4 flex justify-between items-center bg-transparent">
-                    <div className="flex items-center space-x-2 bg-white/60 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm border border-white/50">
-                        <Leaf className="w-5 h-5 text-green-600" />
-                        <span className="font-bold text-green-800 text-sm">Nook Inc.</span>
+                {/* Top Status Bar (Dynamic) */}
+                <div className="p-4 flex justify-between items-center bg-transparent gap-4">
+                    {/* Literacy Progress Bar */}
+                    <div className="flex-1 flex flex-col justify-center bg-white/60 backdrop-blur-sm px-3 py-2 rounded-2xl shadow-sm border border-white/50">
+                        <div className="flex items-center space-x-1 mb-1">
+                            <Leaf className="w-3 h-3 text-green-600" />
+                            <span className="font-bold text-green-800 text-[10px] uppercase tracking-wider">Financial Literacy</span>
+                        </div>
+                        <div className="w-full bg-stone-200 rounded-full h-2 overflow-hidden shadow-inner">
+                            <div
+                                className="bg-gradient-to-r from-green-400 to-emerald-500 h-full rounded-full transition-all duration-1000 ease-out"
+                                style={{ width: `${literacy}%` }}
+                            ></div>
+                        </div>
                     </div>
-                    <div className="flex items-center space-x-2 bg-yellow-100/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm border border-yellow-200">
-                        <div className="w-5 h-5 rounded-full bg-yellow-400 border-2 border-yellow-600 flex items-center justify-center text-[10px] font-bold text-yellow-800">$</div>
-                        <span className="font-bold text-yellow-800 text-sm">1,250</span>
+
+                    {/* Money Pill */}
+                    <div className="flex items-center space-x-2 bg-yellow-100/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-yellow-200 shrink-0">
+                        <div className="w-6 h-6 rounded-full bg-yellow-400 border-2 border-yellow-600 flex items-center justify-center text-xs font-bold text-yellow-900 shadow-sm">$</div>
+                        <span className="font-black text-yellow-900 text-lg tracking-tight">{money}</span>
                     </div>
                 </div>
 
