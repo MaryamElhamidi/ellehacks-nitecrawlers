@@ -20,13 +20,15 @@ const ConsequenceScreen = () => {
     return (
         <div className="flex flex-col h-full overflow-y-auto pb-24">
             {/* Header Area */}
-            <div className="moss-panel mx-4 mt-4 rounded-xl p-8 text-center relative overflow-hidden flex flex-col items-center justify-center shadow-md border-b-4 border-[var(--color-wood-dark)]">
+            <div className="bg-[var(--color-forest-medium)] mx-4 mt-8 rounded-[3rem] p-8 text-center relative overflow-hidden flex flex-col items-center justify-center shadow-xl min-h-[160px] h-auto border-b-6 border-[var(--color-forest-dark)]">
                 <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/pixel-weave.png')]"></div>
 
-                <h1 className="text-2xl font-black mb-2 pixel-font tracking-wide relative z-10 text-white drop-shadow-md">
+                <h1 className="text-3xl font-black mb-3 pixel-font tracking-wide relative z-10 text-white drop-shadow-md uppercase">
                     {isPositive ? "GREAT CHOICE!" : "PURCHASE MADE"}
                 </h1>
-                <p className="font-bold opacity-90 relative z-10 text-green-100 text-lg">{result.message}</p>
+                <p className="font-bold opacity-100 relative z-10 text-white text-lg break-words whitespace-normal max-w-full leading-relaxed shadow-sm">
+                    {result.message}
+                </p>
             </div>
 
             <div className="flex-1 px-6 py-6 flex flex-col items-center justify-start space-y-6">

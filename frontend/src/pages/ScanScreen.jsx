@@ -113,6 +113,26 @@ const ScanScreen = () => {
                             {!cameraReady && <Camera className="text-stone-600 w-12 h-12 animate-pulse" />}
                         </div>
 
+                        {/* Camera Corners Overlay */}
+                        <div className="absolute inset-0 pointer-events-none z-10 p-6 flex items-center justify-center">
+                            <div className="relative w-full h-full border-2 border-transparent">
+                                {/* Top Left */}
+                                <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white/70 rounded-tl-lg"></div>
+                                {/* Top Right */}
+                                <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-white/70 rounded-tr-lg"></div>
+                                {/* Bottom Right */}
+                                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white/70 rounded-br-lg"></div>
+                                {/* Bottom Left */}
+                                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-white/70 rounded-bl-lg"></div>
+
+                                {/* Crosshair Center (Optional, adding for better targeting) */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4">
+                                    <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/50"></div>
+                                    <div className="absolute top-0 left-1/2 h-full w-0.5 bg-white/50"></div>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Scanning Overlay */}
                         {isScanning && (
                             <div className="absolute inset-0 bg-green-500/20 z-10 flex items-center justify-center backdrop-blur-[2px]">
