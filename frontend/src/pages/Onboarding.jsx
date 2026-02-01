@@ -13,7 +13,7 @@ export default function Onboarding() {
         setAllowance(Number(amount));
         setAllowanceFrequency(frequency);
         setHasOnboarded(true);
-        navigate('/');
+        navigate('/scan');
     };
 
     return (
