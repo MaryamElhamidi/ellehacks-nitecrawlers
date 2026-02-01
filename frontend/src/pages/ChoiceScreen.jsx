@@ -7,11 +7,11 @@ const ChoiceCard = ({ title, sub, icon: Icon, color, onClick, disabled }) => (
     <button
         onClick={onClick}
         disabled={disabled}
-        className={`w-full bg-white p-4 rounded-3xl shadow-sm border border-stone-100 transition-all text-left flex items-center space-x-4 group ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.02] active:scale-[0.98]'
+        className={`w-full p-4 rounded-xl shadow-sm border-b-4 transition-all text-left flex items-center space-x-4 group relative overflow-hidden ${disabled ? 'opacity-50 cursor-not-allowed bg-stone-200 border-stone-300' : 'bg-[#fffdf0] border-[var(--color-wood-light)] hover:translate-y-1 hover:border-b-0 active:border-b-0 active:translate-y-1'
             }`}
     >
-        <div className={`w-14 h-14 rounded-2xl ${color} flex items-center justify-center shrink-0`}>
-            <Icon className="text-white w-7 h-7" />
+        <div className={`w-12 h-12 rounded-lg ${color} flex items-center justify-center shrink-0 border-2 border-black/10 shadow-inner`}>
+            <Icon className="text-white w-6 h-6 drop-shadow-sm" />
         </div>
         <div className="flex-1">
             <h3 className="font-bold text-stone-700 text-lg">{title}</h3>
@@ -37,11 +37,13 @@ const ChoiceScreen = () => {
 
     if (!currentScannedItem) return null;
 
-    const handleChoice = (choice) => {
+    const handleChoice = async (choice) => {
         // Save to dictionary naturally as user interacts
         addToDictionary(currentScannedItem);
 
-        const result = simulateChoice(choice, currentScannedItem);
+        // Show loading state if needed here, but for now we just await
+        const result = await simulateChoice(choice, currentScannedItem);
+
         navigate('/consequence', { state: { choice, result, item: currentScannedItem } });
     };
 

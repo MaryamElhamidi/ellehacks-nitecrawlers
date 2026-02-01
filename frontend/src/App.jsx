@@ -5,7 +5,7 @@ import Onboarding from './pages/Onboarding';
 import ScanScreen from './pages/ScanScreen';
 import ChoiceScreen from './pages/ChoiceScreen';
 import ConsequenceScreen from './pages/ConsequenceScreen';
-import ParentView from './pages/ParentView';
+import ProfileScreen from './pages/ProfileScreen';
 import DictionaryScreen from './pages/DictionaryScreen';
 
 // Placeholders until pages are built
@@ -25,12 +25,12 @@ function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/" element={<ScanScreen />} />
+            <Route path="/" element={<Onboarding />} />
+            <Route path="/scan" element={<ScanScreen />} />
             <Route path="/choice" element={<ChoiceScreen />} />
             <Route path="/consequence" element={<ConsequenceScreen />} />
             <Route path="/dictionary" element={<DictionaryScreen />} />
-            <Route path="/parent" element={<ParentView />} />
+            <Route path="/profile" element={<ProfileScreen />} />
 
             {/* Redirect unknown routes */}
             <Route path="*" element={<Navigate to="/" replace />} />
