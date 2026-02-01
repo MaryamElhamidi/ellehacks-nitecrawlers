@@ -125,7 +125,7 @@ const ScanScreen = () => {
 
                         {/* Scanning Line Animation */}
                         {isScanning && (
-                            <div className="absolute top-0 left-0 w-full h-1 bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.8)] animate-[scan_1.5s_linear_infinite] z-10"></div>
+                            <div className="absolute top-0 left-0 w-full h-1 bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.8)] animate-scan z-10"></div>
                         )}
                     </div>
                 </div>
@@ -147,15 +147,6 @@ const ScanScreen = () => {
                     </div>
                 </button>
             </div>
-
-            <style jsx>{`
-                @keyframes scan {
-                    0% { top: 0%; opacity: 0; }
-                    10% { opacity: 1; }
-                    90% { opacity: 1; }
-                    100% { top: 100%; opacity: 0; }
-                }
-            `}</style>
         </div>
     );
 };
