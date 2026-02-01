@@ -8,6 +8,8 @@ import ConsequenceScreen from './pages/ConsequenceScreen';
 import ProfileScreen from './pages/ProfileScreen';
 import DictionaryScreen from './pages/DictionaryScreen';
 
+import UpdateAllowance from './pages/UpdateAllowance';
+
 // Placeholders until pages are built
 function Placeholder({ name }) {
   return (
@@ -26,6 +28,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Onboarding />} />
+            <Route path="/update-allowance" element={<UpdateAllowance />} />
             <Route path="/scan" element={<ScanScreen />} />
             <Route path="/choice" element={<ChoiceScreen />} />
             <Route path="/consequence" element={<ConsequenceScreen />} />

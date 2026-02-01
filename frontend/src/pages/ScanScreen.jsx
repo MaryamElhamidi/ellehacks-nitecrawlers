@@ -76,30 +76,30 @@ const ScanScreen = () => {
         <div className="flex flex-col h-full overflow-hidden relative">
 
             {/* Header / Stats */}
-            <div className="absolute top-4 right-4 z-20">
-                <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-stone-200 flex items-center gap-2">
+            <div className="absolute top-4 right-4 z-20" onClick={() => navigate('/update-allowance')}>
+                <div className="cursor-pointer bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-stone-200 flex items-center gap-2 transform active:scale-95 transition-transform hover:bg-white">
                     <Wallet className="w-4 h-4 text-green-600" />
                     <span className="font-bold text-stone-700">${money}</span>
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col items-center justify-center space-y-8 relative px-6">
+            <div className="flex-1 flex flex-col items-center justify-center space-y-4 md:space-y-8 relative px-6">
 
                 {/* Instruction Bubble */}
-                <div className="bg-white px-6 py-4 rounded-3xl shadow-sm border border-stone-100 max-w-xs text-center relative animate-bounce-slow z-20">
-                    <p className="text-stone-600 font-medium">Point at an object and scan it!</p>
+                <div className="bg-white px-4 py-3 md:px-6 md:py-4 rounded-3xl shadow-sm border border-stone-100 max-w-[200px] md:max-w-xs text-center relative animate-bounce-slow z-20">
+                    <p className="text-stone-600 font-medium text-sm md:text-base">Point at an object and scan it!</p>
                     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-b border-r border-stone-100 transform rotate-45"></div>
                 </div>
 
-                {/* Camera Viewfinder */}
-                <div className="relative w-80 h-96 flex items-center justify-center">
+                {/* Camera Viewfinder - Scaled down for mobile */}
+                <div className="relative w-64 h-80 md:w-80 md:h-96 flex items-center justify-center transition-all duration-300">
                     {/* Wooden Frame Overlay */}
                     <div className="absolute inset-0 z-30 pointer-events-none drop-shadow-2xl">
                         <img src={woodenFrame} alt="Frame" className="w-full h-full object-fill scale-110" />
                     </div>
 
                     {/* Camera Container */}
-                    <div className="relative w-72 h-88 bg-stone-800 pixel-border shadow-inner overflow-hidden rounded-xl">
+                    <div className="relative w-56 h-72 md:w-72 md:h-88 bg-stone-800 pixel-border shadow-inner overflow-hidden rounded-xl transition-all duration-300">
                         {/* Live Camera Feed */}
                         <div className="absolute inset-0 flex items-center justify-center bg-stone-900">
                             <Webcam
@@ -150,18 +150,18 @@ const ScanScreen = () => {
                     </div>
                 </div>
 
-                {/* Scan Button */}
+                {/* Scan Button - Smaller on mobile */}
                 <button
                     onClick={handleScan}
                     disabled={isScanning || !cameraReady}
                     className="group relative z-20"
                 >
                     <div className="absolute inset-0 bg-green-600 rounded-full translate-y-2 transition-transform group-hover:translate-y-3 group-active:translate-y-1"></div>
-                    <div className={`relative bg-green-400 hover:bg-green-300 text-white font-bold text-xl px-10 py-5 rounded-full shadow-lg border-b-4 border-green-600 active:border-b-0 active:translate-y-2 transition-all flex items-center space-x-3 ${!cameraReady ? 'opacity-50 grayscale' : ''}`}>
+                    <div className={`relative bg-green-400 hover:bg-green-300 text-white font-bold text-lg md:text-xl px-6 py-3 md:px-10 md:py-5 rounded-full shadow-lg border-b-4 border-green-600 active:border-b-0 active:translate-y-2 transition-all flex items-center space-x-2 md:space-x-3 ${!cameraReady ? 'opacity-50 grayscale' : ''}`}>
                         {isScanning ? (
-                            <RefreshCw className="animate-spin w-6 h-6" />
+                            <RefreshCw className="animate-spin w-5 h-5 md:w-6 md:h-6" />
                         ) : (
-                            <Zap className="w-6 h-6 group-hover:rotate-12 transition-transform fill-yellow-200 text-yellow-100" />
+                            <Zap className="w-5 h-5 md:w-6 md:h-6 group-hover:rotate-12 transition-transform fill-yellow-200 text-yellow-100" />
                         )}
                         <span>{isScanning ? 'Identifying...' : 'Snap & Scan'}</span>
                     </div>
