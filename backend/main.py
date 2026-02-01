@@ -8,8 +8,8 @@ load_dotenv(dotenv_path)
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-from backend.elevenlabs.elevenLabsClient import ElevenLabsClient
-from backend.elevenlabs.requests import TTSRequest
+from services.elevenLabsClient import ElevenLabsClient
+from services.requests import TTSRequest
 import io
 import google.generativeai as genai
 from pydantic import BaseModel

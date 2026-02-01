@@ -1,5 +1,7 @@
 
 
+import axios from 'axios';
+
 const API_KEY = import.meta.env.VITE_GOOGLE_CLOUD_API_KEY;
 const API_URL = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
 
