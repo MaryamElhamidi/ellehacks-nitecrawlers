@@ -5,6 +5,7 @@ import Webcam from 'react-webcam';
 import { Camera, Search, RefreshCw, Wallet, Zap } from 'lucide-react';
 import { useGame } from '../context/GameContext';
 import { analyzeImage, estimatePrice } from '../services/visionService';
+import woodenFrame from '../assets/wooden_frame.png';
 
 const ScanScreen = () => {
     const navigate = useNavigate();
@@ -13,11 +14,10 @@ const ScanScreen = () => {
     const [isScanning, setIsScanning] = useState(false);
     const [cameraReady, setCameraReady] = useState(false);
 
-    useEffect(() => {
-        if (!hasOnboarded) {
-            navigate('/onboarding');
-        }
-    }, [hasOnboarded, navigate]);
+    // Removed onboarding check redirect because user might access from nav bar
+    // if (!hasOnboarded) {
+    //     navigate('/onboarding');
+    // }
 
     const handleScan = useCallback(async () => {
         if (!webcamRef.current) return;
@@ -70,10 +70,10 @@ const ScanScreen = () => {
         }
     }, [webcamRef, navigate, setCurrentScannedItem, checkSimilarity]);
 
-    if (!hasOnboarded) return null;
+    // if (!hasOnboarded) return null;
 
     return (
-        <div className="flex flex-col h-full bg-stone-50 overflow-hidden relative">
+        <div className="flex flex-col h-full overflow-hidden relative">
 
             {/* Header / Stats */}
             <div className="absolute top-4 right-4 z-20">
@@ -92,40 +92,42 @@ const ScanScreen = () => {
                 </div>
 
                 {/* Camera Viewfinder */}
-                <div className="relative w-72 h-72 bg-stone-800 pixel-border shadow-xl overflow-hidden group rounded-none">
-                    {/* Live Camera Feed */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-stone-900">
-                        <Webcam
-                            audio={false}
-                            ref={webcamRef}
-                            screenshotFormat="image/jpeg"
-                            videoConstraints={{ facingMode: "environment" }}
-                            className="absolute inset-0 w-full h-full object-cover opacity-90"
-                            onUserMedia={() => setCameraReady(true)}
-                        />
-                        {!cameraReady && <Camera className="text-stone-600 w-12 h-12 animate-pulse" />}
+                <div className="relative w-80 h-96 flex items-center justify-center">
+                    {/* Wooden Frame Overlay */}
+                    <div className="absolute inset-0 z-30 pointer-events-none drop-shadow-2xl">
+                        <img src={woodenFrame} alt="Frame" className="w-full h-full object-fill scale-110" />
                     </div>
 
-                    {/* Scanning Overlay */}
-                    {isScanning && (
-                        <div className="absolute inset-0 bg-green-500/20 z-10 flex items-center justify-center backdrop-blur-[2px]">
-                            <div className="relative">
-                                <div className="absolute inset-0 bg-white/20 blur-xl rounded-full"></div>
-                                <Search className="text-white w-16 h-16 animate-pulse relative z-10" />
-                            </div>
+                    {/* Camera Container */}
+                    <div className="relative w-72 h-88 bg-stone-800 pixel-border shadow-inner overflow-hidden rounded-xl">
+                        {/* Live Camera Feed */}
+                        <div className="absolute inset-0 flex items-center justify-center bg-stone-900">
+                            <Webcam
+                                audio={false}
+                                ref={webcamRef}
+                                screenshotFormat="image/jpeg"
+                                videoConstraints={{ facingMode: "environment" }}
+                                className="absolute inset-0 w-full h-full object-cover opacity-90"
+                                onUserMedia={() => setCameraReady(true)}
+                            />
+                            {!cameraReady && <Camera className="text-stone-600 w-12 h-12 animate-pulse" />}
                         </div>
-                    )}
 
-                    {/* Scanning Line Animation */}
-                    {isScanning && (
-                        <div className="absolute top-0 left-0 w-full h-1 bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.8)] animate-[scan_1.5s_linear_infinite] z-10"></div>
-                    )}
+                        {/* Scanning Overlay */}
+                        {isScanning && (
+                            <div className="absolute inset-0 bg-green-500/20 z-10 flex items-center justify-center backdrop-blur-[2px]">
+                                <div className="relative">
+                                    <div className="absolute inset-0 bg-white/20 blur-xl rounded-full"></div>
+                                    <Search className="text-white w-16 h-16 animate-pulse relative z-10" />
+                                </div>
+                            </div>
+                        )}
 
-                    {/* Viewfinder markings */}
-                    <div className="absolute top-4 left-4 w-8 h-8 border-t-4 border-l-4 border-white/60 rounded-tl-xl z-20"></div>
-                    <div className="absolute top-4 right-4 w-8 h-8 border-t-4 border-r-4 border-white/60 rounded-tr-xl z-20"></div>
-                    <div className="absolute bottom-4 left-4 w-8 h-8 border-b-4 border-l-4 border-white/60 rounded-bl-xl z-20"></div>
-                    <div className="absolute bottom-4 right-4 w-8 h-8 border-b-4 border-r-4 border-white/60 rounded-br-xl z-20"></div>
+                        {/* Scanning Line Animation */}
+                        {isScanning && (
+                            <div className="absolute top-0 left-0 w-full h-1 bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.8)] animate-[scan_1.5s_linear_infinite] z-10"></div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Scan Button */}

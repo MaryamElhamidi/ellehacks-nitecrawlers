@@ -5,47 +5,69 @@ const GameContext = createContext();
 export const useGame = () => useContext(GameContext);
 
 export const GameProvider = ({ children }) => {
+    // Helper to get initial state from localStorage or default
+    const getInitialState = (key, defaultValue) => {
+        const saved = localStorage.getItem(key);
+        return saved ? JSON.parse(saved) : defaultValue;
+    };
+
     // User Settings
-    const [allowance, setAllowance] = useState(50);
-    const [allowanceFrequency, setAllowanceFrequency] = useState('weekly'); // 'weekly' or 'monthly'
-    const [hasOnboarded, setHasOnboarded] = useState(false);
+    const [allowance, setAllowance] = useState(() => getInitialState('nitecrawlers_allowance', 50));
+    const [allowanceFrequency, setAllowanceFrequency] = useState(() => getInitialState('nitecrawlers_allowanceFrequency', 'weekly'));
+    const [hasOnboarded, setHasOnboarded] = useState(() => getInitialState('nitecrawlers_hasOnboarded', false));
 
     // Core stats
-    const [money, setMoney] = useState(50); // Starts with allowance
-    const [literacy, setLiteracy] = useState(30); // 0-100
-    const [growth, setGrowth] = useState(1); // 0-5 stages of island growth
-    const [timeline, setTimeline] = useState(1); // Days passed
+    const [money, setMoney] = useState(() => getInitialState('nitecrawlers_money', 50));
+    const [literacy, setLiteracy] = useState(() => getInitialState('nitecrawlers_literacy', 30));
+    const [growth, setGrowth] = useState(() => getInitialState('nitecrawlers_growth', 1));
+    const [timeline, setTimeline] = useState(() => getInitialState('nitecrawlers_timeline', 1));
 
     // Session State
-    const [currentScannedItem, setCurrentScannedItem] = useState(null);
-    const [transactions, setTransactions] = useState([]);
+    const [currentScannedItem, setCurrentScannedItem] = useState(null); // Not persisting scanned item for now, maybe usually transient?
+    const [transactions, setTransactions] = useState(() => getInitialState('nitecrawlers_transactions', []));
 
     // Statistics for Profile/Receipt
-    const [stats, setStats] = useState({
+    const [stats, setStats] = useState(() => getInitialState('nitecrawlers_stats', {
         wantsBought: 0,
         savedForLater: 0,
         skipped: 0,
         totalSpent: 0,
         totalSaved: 0,
-        scamsAvoided: 0 // Placeholder if we add scams later
-    });
+        scamsAvoided: 0
+    }));
 
     // Dictionary State (Persisted)
-    const [dictionary, setDictionary] = useState(() => {
-        const saved = localStorage.getItem('nitecrawlers_dictionary');
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [dictionary, setDictionary] = useState(() => getInitialState('nitecrawlers_dictionary', []));
 
-    // Initialize money when allowance is set
+    // Persist all state changes
     useEffect(() => {
-        if (!hasOnboarded) return;
-        setMoney(allowance);
-    }, [allowance, hasOnboarded]);
-
-    // Persist dictionary
-    useEffect(() => {
+        localStorage.setItem('nitecrawlers_allowance', JSON.stringify(allowance));
+        localStorage.setItem('nitecrawlers_allowanceFrequency', JSON.stringify(allowanceFrequency));
+        localStorage.setItem('nitecrawlers_hasOnboarded', JSON.stringify(hasOnboarded));
+        localStorage.setItem('nitecrawlers_money', JSON.stringify(money));
+        localStorage.setItem('nitecrawlers_literacy', JSON.stringify(literacy));
+        localStorage.setItem('nitecrawlers_growth', JSON.stringify(growth));
+        localStorage.setItem('nitecrawlers_timeline', JSON.stringify(timeline));
+        localStorage.setItem('nitecrawlers_transactions', JSON.stringify(transactions));
+        localStorage.setItem('nitecrawlers_stats', JSON.stringify(stats));
         localStorage.setItem('nitecrawlers_dictionary', JSON.stringify(dictionary));
-    }, [dictionary]);
+    }, [allowance, allowanceFrequency, hasOnboarded, money, literacy, growth, timeline, transactions, stats, dictionary]);
+
+    // Initialize money when allowance is set (only if not onboarding, logic might need tweak if persisting)
+    // Actually, if we persist 'money', we don't want to reset it on every load if allowance exists.
+    // The previous logic was:
+    // useEffect(() => {
+    //     if (!hasOnboarded) return;
+    //     setMoney(allowance);
+    // }, [allowance, hasOnboarded]);
+    //
+    // Issue: If I reload, hasOnboarded is true, allowance is loaded. It might reset money to allowance?
+    // Wait, the original code ONLY set money to allowance when allowance changed OR hasOnboarded changed.
+    // If we load derived state, we might not need this explicitly if we trust the persisted 'money'.
+    // BUT, if the user changes allowance in settings (if that feature exists), money might need update?
+    // For now, I will REMOVE this auto-reset to avoid overwriting persisted money on reload.
+    // The Onboarding page sets the initial allowance and should probably set the initial money too.
+    // I'll check Onboarding.jsx again, but for now let's remove the potential conflict.
 
     // Dictionary Actions
     const addToDictionary = (item) => {

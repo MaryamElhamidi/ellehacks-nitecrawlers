@@ -1,3 +1,4 @@
+'''
 from elevenlabs.client import ElevenLabs
 import os
 from typing import IO, Iterator
@@ -24,3 +25,4 @@ class ElevenLabsClient:
         except Exception as e:
             print(f"Error generating audio: {e}")
             raise e
+'''

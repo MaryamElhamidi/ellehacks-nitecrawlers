@@ -51,15 +51,31 @@
 body {
   background-color: var(--color-parchment);
   color: var(--color-wood-dark);
-  font-family: 'Inter', sans-serif;
-  /* Fallback */
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  /* Make all text bolder/clearer */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 800;
+  /* Extra bold for headings */
 }
 
 .pixel-font {
   font-family: 'Courier New', Courier, monospace;
-  /* Placeholder for pixel font */
   font-weight: 700;
   letter-spacing: -0.5px;
+}
+
+.ultra-bold {
+  font-weight: 900;
+  text-shadow: 1px 0 0 currentColor;
+  /* Faux bold for extra thickness */
 }
 
 /* Wood/Pixel Utilities */

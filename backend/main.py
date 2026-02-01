@@ -8,7 +8,7 @@ load_dotenv(dotenv_path)
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-from services.elevenLabsClient import ElevenLabsClient
+#from services.elevenLabsClient import ElevenLabsClient
 from services.requests import TTSRequest
 import io
 import google.generativeai as genai
@@ -38,7 +38,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-eleven_labs_client = ElevenLabsClient()
+#eleven_labs_client = ElevenLabsClient()
 
 class TipRequest(BaseModel):
     action: str

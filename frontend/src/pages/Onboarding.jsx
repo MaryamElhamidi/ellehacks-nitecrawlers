@@ -4,17 +4,10 @@ import { useGame } from '../context/GameContext';
 import { Coins, Calendar, ArrowRight } from 'lucide-react';
 
 export default function Onboarding() {
-    const { setAllowance, setAllowanceFrequency, setHasOnboarded } = useGame();
+    const { setAllowance, setAllowanceFrequency, setHasOnboarded, setMoney } = useGame();
     const [amount, setAmount] = useState(50);
     const [frequency, setFrequency] = useState('weekly');
     const navigate = useNavigate();
-
-    const handleStart = () => {
-        setAllowance(Number(amount));
-        setAllowanceFrequency(frequency);
-        setHasOnboarded(true);
-        navigate('/scan');
-    };
 
     return (
         <div className="flex flex-col h-full bg-stone-100 p-6 overflow-hidden">
@@ -24,15 +17,15 @@ export default function Onboarding() {
                     <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-xl">
                         <Coins className="w-10 h-10 text-green-600" />
                     </div>
-                    <h1 className="text-3xl font-bold text-stone-800 tracking-tight">Let's Get Started!</h1>
-                    <p className="text-stone-500">Set up your allowance to begin your financial journey.</p>
+                    <h1 className="text-3xl ultra-bold text-stone-800 tracking-tight">Let's get started!</h1>
+                    <p className="text-stone-500">Update your settings anytime.</p>
                 </div>
 
                 <div className="bg-white rounded-3xl p-8 shadow-sm border border-stone-200 space-y-6">
 
                     {/* Amount Input */}
                     <div className="space-y-3">
-                        <label className="text-sm font-semibold text-stone-600 uppercase tracking-wider">Allowance Amount</label>
+                        <label className="text-sm ultra-bold text-stone-600 uppercase tracking-wider">Allowance Amount</label>
                         <div className="relative">
                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-bold text-stone-400">$</span>
                             <input
@@ -46,7 +39,7 @@ export default function Onboarding() {
 
                     {/* Frequency Toggle */}
                     <div className="space-y-3">
-                        <label className="text-sm font-semibold text-stone-600 uppercase tracking-wider">How often?</label>
+                        <label className="text-sm ultra-bold text-stone-600 uppercase tracking-wider">How often?</label>
                         <div className="grid grid-cols-2 gap-3 p-1 bg-stone-100 rounded-2xl">
                             <button
                                 onClick={() => setFrequency('weekly')}
@@ -69,18 +62,25 @@ export default function Onboarding() {
                         </div>
                     </div>
 
+                    {/* Save Button */}
+                    <button
+                        onClick={() => {
+                            const value = Number(amount);
+                            setAllowance(value);
+                            setAllowanceFrequency(frequency);
+                            setMoney(value); // Update wallet as requested
+                            setHasOnboarded(true);
+                            alert("Allowance saved & Wallet updated!");
+                        }}
+                        className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl shadow-md border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wider text-sm"
+                    >
+                        Save allowance
+                    </button>
+
                 </div>
 
             </div>
-
-            <div className="mt-auto pt-6">
-                <button
-                    onClick={handleStart}
-                    className="w-full bg-green-600 text-white rounded-3xl py-4 font-bold text-lg shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2 hover:bg-green-500"
-                >
-                    Start Your Journey <ArrowRight className="w-5 h-5" />
-                </button>
-            </div>
+            {/* Removed "Start" button as requested */}
         </div>
     );
 }

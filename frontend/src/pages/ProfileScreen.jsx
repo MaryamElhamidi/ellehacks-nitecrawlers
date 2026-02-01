@@ -34,7 +34,7 @@ const ProfileScreen = () => {
                         }`}
                 >
                     <Scroll size={18} />
-                    <span className="font-bold pixel-font text-sm uppercase">Receipt</span>
+                    <span className="ultra-bold pixel-font text-sm uppercase">Receipt</span>
                 </button>
                 <button
                     onClick={() => setActiveTab('collection')}
@@ -44,7 +44,7 @@ const ProfileScreen = () => {
                         }`}
                 >
                     <Book size={18} />
-                    <span className="font-bold pixel-font text-sm uppercase">Notebook</span>
+                    <span className="ultra-bold pixel-font text-sm uppercase">Notebook</span>
                 </button>
             </div>
 
@@ -57,7 +57,7 @@ const ProfileScreen = () => {
                         <div className="w-full max-w-sm border-4 border-stone-800 p-6 font-mono pixel-border bg-white transform rotate-1 shadow-lg">
                             {/* Receipt Header */}
                             <div className="text-center border-b-4 border-dashed border-[var(--color-wood-dark)] pb-4 mb-4">
-                                <h2 className="text-xl font-black uppercase tracking-widest text-[var(--color-forest-dark)] mb-1 pixel-font">Receipt</h2>
+                                <h2 className="text-xl ultra-bold uppercase tracking-widest text-[var(--color-forest-dark)] mb-1 pixel-font">Receipt</h2>
                                 <p className="text-xs text-stone-500 uppercase tracking-widest">Mystic Finance Inc.</p>
                                 <p className="text-xs text-stone-500">{new Date().toLocaleDateString()}</p>
                             </div>
@@ -91,7 +91,7 @@ const ProfileScreen = () => {
 
                             {/* Totals */}
                             <div className="border-t-4 border-dashed border-[var(--color-wood-dark)] pt-4 mb-6 space-y-1">
-                                <div className="flex justify-between font-black text-xl mt-2 pt-2">
+                                <div className="flex justify-between ultra-bold text-xl mt-2 pt-2">
                                     <span>WALLET</span>
                                     <span>${money}</span>
                                 </div>
@@ -103,7 +103,7 @@ const ProfileScreen = () => {
 
                             {/* Verdict Stamp */}
                             <div className="text-center mb-8 transform -rotate-2">
-                                <span className="inline-block border-4 border-double border-[var(--color-forest-dark)] text-[var(--color-forest-dark)] px-4 py-1 text-sm font-black uppercase opacity-90" style={{ transform: 'rotate(-10deg)' }}>
+                                <span className="inline-block border-4 border-double border-[var(--color-forest-dark)] text-[var(--color-forest-dark)] px-4 py-1 text-sm ultra-bold uppercase opacity-90" style={{ transform: 'rotate(-10deg)' }}>
                                     {getVerdict()}
                                 </span>
                             </div>
@@ -117,7 +117,7 @@ const ProfileScreen = () => {
                 {activeTab === 'collection' && (
                     <div className="animate-fade-in pb-12">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-bold pixel-font text-[var(--color-wood-dark)]">Your Discoveries</h3>
+                            <h3 className="text-lg ultra-bold pixel-font text-[var(--color-wood-dark)]">Your Discoveries</h3>
                             <span className="text-xs font-bold bg-amber-100 text-amber-700 px-2 py-1 rounded-full border border-amber-200">{dictionary.length} Items</span>
                         </div>
 

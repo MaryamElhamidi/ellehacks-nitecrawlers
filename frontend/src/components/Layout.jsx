@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Home, Scan, Users } from 'lucide-react';
 
 import { useGame } from '../context/GameContext';
@@ -12,6 +12,7 @@ const Layout = ({ children }) => {
     // but it's not present in the original code. For now, let's define a placeholder.
     // In a real app, you'd get this from context or calculate it.
     const growth = Math.floor(literacy / 10); // Example: Lvl 0-10 based on literacy 0-100
+    const location = useLocation();
 
     return (
         <div className="flex flex-col h-screen max-w-md mx-auto bg-[#f4f1ea] relative overflow-hidden shadow-2xl border-x-4 border-[var(--color-wood-dark)]">
@@ -19,12 +20,12 @@ const Layout = ({ children }) => {
             <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232d4a22' fill-opacity='0.4' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")` }}></div>
 
             {/* Header / Top Info */}
-            <header className="bg-[var(--color-forest-dark)] text-white p-3 z-10 shadow-md border-b-4 border-[var(--color-wood-medium)] flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm border border-white/30 p-1">
-                        <img src={notebookIcon} alt="Logo" className="w-full h-full object-contain" style={{ imageRendering: 'pixelated' }} />
+            <header className="bg-[var(--color-forest-dark)] text-white py-1 px-3 z-10 shadow-md border-b-4 border-[var(--color-wood-medium)] flex items-center justify-between">
+                <div className="flex items-center gap-0">
+                    <div className="w-16 h-16 flex items-center justify-center p-0">
+                        <img src={notebookIcon} alt="Logo" className="w-full h-full object-contain drop-shadow-md" style={{ imageRendering: 'pixelated' }} />
                     </div>
-                    <span className="font-bold tracking-wide pixel-font text-sm text-[var(--color-pastel-amber)]">ScanIt</span>
+                    <span className="font-bold tracking-wide pixel-font text-2xl text-[var(--color-pastel-amber)] mt-1 -ml-1">ScanIt</span>
                 </div>
 
                 <div className="flex items-center space-x-2 bg-black/30 px-3 py-1 rounded-full border border-white/10">
@@ -43,7 +44,7 @@ const Layout = ({ children }) => {
                 {children || <Outlet />}
             </main>
 
-            {/* Bottom Navigation */}
+            {/* Bottom Navigation relative to viewport if using fixed positioning, but here it is absolute in relative container */}
             <nav className="wood-panel absolute bottom-4 left-4 right-4 rounded-full flex justify-around items-center h-16 z-20 shadow-xl">
                 <NavLink to="/" className={({ isActive }) => `flex flex-col items-center justify-center w-full h-full transition-all ${isActive ? 'text-[var(--color-pastel-amber)]' : 'text-stone-300 hover:text-white'}`}>
                     {({ isActive }) => (

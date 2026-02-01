@@ -14,7 +14,7 @@ const ChoiceCard = ({ title, sub, icon: Icon, color, onClick, disabled }) => (
             <Icon className="text-white w-6 h-6 drop-shadow-sm" />
         </div>
         <div className="flex-1">
-            <h3 className="font-bold text-stone-700 text-lg">{title}</h3>
+            <h3 className="ultra-bold text-stone-700 text-lg uppercase">{title}</h3>
             <p className="text-stone-400 text-sm font-medium">{sub}</p>
         </div>
         {!disabled && (
@@ -68,10 +68,10 @@ const ChoiceScreen = () => {
             {/* Financial Concept Card */}
             {financialInfo && (
                 <div className="bg-amber-50 p-4 rounded-xl border-b-4 border-amber-200 relative group">
-                    <div className="absolute -top-3 -right-2 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-1 rounded-full border-2 border-yellow-600 shadow-sm animate-bounce-slow">
+                    <div className="absolute -top-3 -right-2 bg-yellow-400 text-yellow-900 text-[10px] ultra-bold px-2 py-1 rounded-full border-2 border-yellow-600 shadow-sm animate-bounce-slow">
                         FUN FACT!
                     </div>
-                    <h3 className="text-sm font-bold text-amber-800 uppercase tracking-wider mb-1">
+                    <h3 className="text-sm ultra-bold text-amber-800 uppercase tracking-wider mb-1">
                         {financialInfo.term}
                     </h3>
                     <p className="text-stone-700 font-bold text-sm mb-2 leading-relaxed">
@@ -91,9 +91,9 @@ const ChoiceScreen = () => {
                             <DollarSign className="w-5 h-5" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-bold uppercase tracking-wider text-stone-500">Your Wallet</p>
-                            <p className={`font-bold ${canAfford ? 'text-green-700' : 'text-red-700'}`}>
-                                ${money} available
+                            <p className="text-[10px] ultra-bold uppercase tracking-wider text-stone-500">YOUR WALLET</p>
+                            <p className={`ultra-bold ${canAfford ? 'text-green-700' : 'text-red-700'}`}>
+                                ${money} AVAILABLE
                             </p>
                         </div>
                     </div>
