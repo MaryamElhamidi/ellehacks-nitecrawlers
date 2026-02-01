@@ -221,7 +221,7 @@ export const GameProvider = ({ children }) => {
             allowance, setAllowance,
             allowanceFrequency, setAllowanceFrequency,
             hasOnboarded, setHasOnboarded,
-            money,
+            money, setMoney,
             literacy,
             growth,
             timeline,

@@ -80,18 +80,34 @@ export default function Onboarding() {
                             setIsSaving(true);
                             console.log("Saving allowance...");
 
-                            const value = Number(amount);
-                            setAllowance(value);
-                            setAllowanceFrequency(frequency);
-                            setMoney(value);
-                            setHasOnboarded(true);
+                            try {
+                                const value = Number(amount);
 
-                            // Visual feedback delay + Fallback navigation
-                            setTimeout(() => {
-                                console.log("Fallback navigation triggered - Forcing window location change");
-                                // Force hard navigation since soft navigation seems stuck
-                                window.location.href = '/scan';
-                            }, 500);
+                                // 1. Update React State (for UI consistency if we stayed)
+                                setAllowance(value);
+                                setAllowanceFrequency(frequency);
+                                setMoney(value);
+                                setHasOnboarded(true);
+
+                                // 2. FORCE Manual Persistence (Bypass React State Async Delay)
+                                // This guarantees data is saved before the page reloads
+                                localStorage.setItem('nitecrawlers_allowance', JSON.stringify(value));
+                                localStorage.setItem('nitecrawlers_allowanceFrequency', JSON.stringify(frequency));
+                                localStorage.setItem('nitecrawlers_money', JSON.stringify(value));
+                                localStorage.setItem('nitecrawlers_hasOnboarded', JSON.stringify(true));
+
+                                console.log("Manual persistence complete. Forcing navigation...");
+
+                                // 3. Aggressive Navigation
+                                setTimeout(() => {
+                                    console.log("Executing window.location.replace...");
+                                    window.location.replace('/scan');
+                                }, 200); // Short delay to let UI show "Saving..." briefly
+                            } catch (e) {
+                                console.error("CRITICAL ERROR IN SAVE:", e);
+                                alert("Save failed: " + e.message);
+                                setIsSaving(false);
+                            }
                         }}
                         className={`w-full text-white font-bold py-4 rounded-2xl shadow-md border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wider text-sm ${isSaving ? 'bg-green-400 cursor-wait' : 'bg-green-500 hover:bg-green-600'
                             }`}
