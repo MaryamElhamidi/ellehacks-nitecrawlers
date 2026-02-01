@@ -4,15 +4,17 @@ import { useGame } from '../context/GameContext';
 import { Coins, Calendar, ArrowRight } from 'lucide-react';
 
 export default function Onboarding() {
-    const { setAllowance, setAllowanceFrequency, setHasOnboarded, setMoney } = useGame();
+    const { setAllowance, setAllowanceFrequency, setHasOnboarded, setMoney, hasOnboarded } = useGame();
     const [amount, setAmount] = useState(50);
     const [frequency, setFrequency] = useState('weekly');
     const navigate = useNavigate();
 
     // Auto-redirect if already onboarded
-    if (hasOnboarded) {
-        navigate('/scan', { replace: true });
-    }
+    useEffect(() => {
+        if (hasOnboarded) {
+            navigate('/scan', { replace: true });
+        }
+    }, [hasOnboarded, navigate]);
 
     return (
         <div className="flex flex-col h-full bg-stone-100 p-6 overflow-hidden">
