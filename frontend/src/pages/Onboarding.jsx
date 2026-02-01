@@ -9,6 +9,11 @@ export default function Onboarding() {
     const [frequency, setFrequency] = useState('weekly');
     const navigate = useNavigate();
 
+    // Auto-redirect if already onboarded
+    if (hasOnboarded) {
+        navigate('/scan', { replace: true });
+    }
+
     return (
         <div className="flex flex-col h-full bg-stone-100 p-6 overflow-hidden">
             <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full space-y-8">
@@ -70,7 +75,8 @@ export default function Onboarding() {
                             setAllowanceFrequency(frequency);
                             setMoney(value); // Update wallet as requested
                             setHasOnboarded(true);
-                            alert("Allowance saved & Wallet updated!");
+                            // alert("Allowance saved & Wallet updated!");
+                            navigate('/scan');
                         }}
                         className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl shadow-md border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wider text-sm"
                     >
