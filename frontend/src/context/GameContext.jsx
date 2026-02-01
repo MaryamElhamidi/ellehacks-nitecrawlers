@@ -20,6 +20,16 @@ export const GameProvider = ({ children }) => {
     const [currentScannedItem, setCurrentScannedItem] = useState(null);
     const [transactions, setTransactions] = useState([]);
 
+    // Statistics for Profile/Receipt
+    const [stats, setStats] = useState({
+        wantsBought: 0,
+        savedForLater: 0,
+        skipped: 0,
+        totalSpent: 0,
+        totalSaved: 0,
+        scamsAvoided: 0 // Placeholder if we add scams later
+    });
+
     // Dictionary State (Persisted)
     const [dictionary, setDictionary] = useState(() => {
         const saved = localStorage.getItem('nitecrawlers_dictionary');
@@ -63,7 +73,7 @@ export const GameProvider = ({ children }) => {
     };
 
     // Simulation / Consequence Engine
-    const simulateChoice = (choiceType, item) => {
+    const simulateChoice = async (choiceType, item) => {
         let result = {
             message: "",
             moneyChange: 0,
@@ -80,15 +90,19 @@ export const GameProvider = ({ children }) => {
             case 'buy':
                 if (money >= itemPrice) {
                     result.moneyChange = -itemPrice;
-                    result.literacyChange = 2; // Small learning
+                    result.literacyChange = -10; // Spending reduces financial literacy XP!
                     result.growthChange = 0; // Stagnant
-                    result.message = `You bought the ${itemName}. Enjoy it, but remember your budget!`;
-                    // Auto-add to dictionary on buy? Optional, maybe only on scan?
-                    // For now, we assume dictionary is "Seen" items, so maybe adding on choice screen is better.
+                    result.message = `You bought the ${itemName}. It's cool, but your wallet (and XP) took a hit!`;
+
+                    setStats(prev => ({
+                        ...prev,
+                        wantsBought: prev.wantsBought + 1,
+                        totalSpent: prev.totalSpent + itemPrice
+                    }));
                 } else {
                     // Should be prevented by UI, but fallback:
                     result.moneyChange = 0;
-                    result.literacyChange = -5; // Bad financial attempt
+                    result.literacyChange = -2; // Bad financial calculation
                     result.message = `You don't have enough money for the ${itemName}.`;
                 }
                 result.timePassed = 1;
@@ -101,16 +115,27 @@ export const GameProvider = ({ children }) => {
                 result.growthChange = 1;
                 result.message = `Smart move! Putting the ${itemName} on your wishlist gives you time to think.`;
                 result.timePassed = 1;
+
+                setStats(prev => ({
+                    ...prev,
+                    savedForLater: prev.savedForLater + 1
+                }));
                 break;
 
             case 'skip':
                 // Delayed gratification
                 result.moneyChange = 0; // Saved everything
-                result.literacyChange = 10; // Big learning moment
+                result.literacyChange = 15; // Big learning moment
                 result.growthChange = 2; // Fast growth
                 result.message = `Super saver! By skipping the ${itemName}, you kept $${itemPrice} in your pocket!`;
                 result.savingsPrediction = itemPrice * 4; // Projected monthly savings if repeated
                 result.timePassed = 1;
+
+                setStats(prev => ({
+                    ...prev,
+                    skipped: prev.skipped + 1,
+                    totalSaved: prev.totalSaved + itemPrice
+                }));
                 break;
 
             default:
@@ -134,7 +159,39 @@ export const GameProvider = ({ children }) => {
             }]);
         }
 
+        // --- Dynamic Tip Generation via Gemini ---
+        try {
+            console.log("Fetching AI tip for:", itemName, "Action:", choiceType);
+            const response = await fetch("http://localhost:8000/api/generate-tip", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    action: choiceType === 'later' ? 'saving for later' : (choiceType === 'skip' ? 'skipping' : 'buying'),
+                    item_name: itemName,
+                    price: itemPrice,
+                    balance: money + result.moneyChange
+                })
+            });
+            const data = await response.json();
+            console.log("AI Tip response:", data);
+
+            if (data.tip) {
+                result.tip = data.tip;
+            } else {
+                result.tip = getFallbackTip(choiceType);
+            }
+        } catch (error) {
+            console.error("Failed to fetch AI tip:", error);
+            result.tip = getFallbackTip(choiceType);
+        }
+
         return result;
+    };
+
+    const getFallbackTip = (choice) => {
+        if (choice === 'buy') return "Buying things for fun lowers your savings power. Try to save up for bigger goals!";
+        if (choice === 'later') return "Waiting gives you time to decide if you *really* need it.";
+        return "By saying 'No' today, you kept cash for something better tomorrow!";
     };
 
     return (
@@ -149,7 +206,8 @@ export const GameProvider = ({ children }) => {
             currentScannedItem, setCurrentScannedItem,
             transactions,
             simulateChoice,
-            dictionary, addToDictionary, checkSimilarity
+            dictionary, addToDictionary, checkSimilarity,
+            stats
         }}>
             {children}
         </GameContext.Provider>
