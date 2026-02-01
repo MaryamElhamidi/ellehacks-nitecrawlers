@@ -72,7 +72,15 @@ async def generate_tip(request: TipRequest):
         return {"tip": response.text}
     except Exception as e:
         print(f"DEBUG: Gemini Error: {e}")
-        return {"tip": "Savings grow when you wait! (AI Error)"}
+        # Fallback logic
+        if "buy" in request.action.lower():
+             fallback_tip = f"Buying costs ${request.price}. That's a lot! Maybe wait a week?"
+        elif "sav" in request.action.lower(): # save, saving
+             fallback_tip = f"Saving is great! You keep your ${request.balance} and grow your wealth."
+        else:
+             fallback_tip = "Every choice matters. Think: Is this a Need or a Want?"
+             
+        return {"tip": fallback_tip}
 
 @app.post("/api/tts")
 async def text_to_speech(request: TTSRequest):
